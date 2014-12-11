@@ -1,0 +1,37 @@
+﻿@{
+    var S = RSOI_lab2.Controllers.NotebooksController.SpisokN;
+}
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Подробно</h2>
+
+<table border="1" width="800" bgcolor="#CFCFCF">
+    <tr>
+        <td>ID</td>
+        <td>Наименование</td>
+        <td>Процессор</td>
+        <td>Размер оперативки (Гб)</td>
+        <td>Объем жесткого (Гб)</td>
+        <td>Видеокарта</td>
+        <td>Размер экрана (дюйм)</td>
+        <td>ID производителя</td>
+        <td>Цена (руб)</td>
+    </tr>
+    @{ foreach (var item in S)
+     {
+        <tr>
+            <td>@item.ID</td>
+            <td>@item.Name</td>
+            <td>@item.Proc</td>
+            <td>@item.Oper</td>
+            <td>@item.Memory</td>
+            <td>@item.VideoCard</td>
+            <td>@item.Desksize</td>
+            <td>@item.ProizvID</td>
+            <td>@item.Price</td>
+        </tr>
+     } }
+</table>
+
