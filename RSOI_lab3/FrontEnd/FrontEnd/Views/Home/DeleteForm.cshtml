@@ -1,0 +1,17 @@
+﻿@model FrontEnd.Models.Notebook
+
+@{
+    ViewBag.Title = "Удаление";
+}
+
+<h2>Удаление</h2>
+
+<h3 style="color: Red;">@FrontEnd.Controllers.HomeController.MessegDelete</h3>
+
+<p>Введите номер ноутбука, которых хотите удалить:</p>
+@using (Html.BeginForm())
+{
+    <p>ID: @Html.TextBoxFor(x => x.ID) </p>
+    <input type="submit" value="Удалить" />
+}
+

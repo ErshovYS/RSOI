@@ -7,7 +7,8 @@ namespace RSOI_lab2.Models
 {
     public class Codes
     {
-        public string Code { get; set; }
         public string Access_token { get; set; }
+        public string Refresh_token { get; set; }
+        public string Expires_in { get; set; }
     }
 }
