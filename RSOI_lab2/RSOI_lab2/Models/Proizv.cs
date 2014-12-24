@@ -13,10 +13,4 @@ namespace RSOI_lab2.Models
         public int Year { get; set; }
         
     }
-
-    public class PolnProizv
-    {
-        public Proizv Infa { get; set; }
-        public List<NotebookShort> Spisok { get; set; }
-    }
 }

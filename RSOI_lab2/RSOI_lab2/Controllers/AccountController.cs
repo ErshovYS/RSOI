@@ -12,10 +12,10 @@ namespace RSOI_lab2.Controllers
     public class AccountController : Controller
     {
         public static string Message = "", Message1 = "";
+        public static string UserName = "";
         public static int Client_id = 0;
         public static Users Uzver;
-        public static HttpCookie Kuka;
-        public static List<string> RandCodes = new List<string>();
+
         // GET: Account
         public ActionResult Index()
         {
@@ -62,6 +62,7 @@ namespace RSOI_lab2.Controllers
                     da.InsertCommand = cmd;
                     da.Update(ds, tbl);
                     Message = "Регистрация прошла успешно";
+                    UserName = guestR.LogiN;
 //                    FormsAuthentication.SetAuthCookie(guestR.Name, true);
 
                     return RedirectToAction("Index", "Notebooks");
@@ -133,7 +134,7 @@ namespace RSOI_lab2.Controllers
             try
             {
                 string tbl = "Users";
-                
+
                 string qry = @"select * from " + tbl;
                 // Создаем адаптер данных
                 SqlDataAdapter da = new SqlDataAdapter();
@@ -148,12 +149,12 @@ namespace RSOI_lab2.Controllers
                 {
 //                    FormsAuthentication.SetAuthCookie(guestR.Name, true);
                     Message1 = "";
+                    UserName = guestR.LogiN;
                     Uzver = guestR;
                     AuthorizeController.LoadCodes();
 
                     Random R = new Random();
-                    string Code = R.Next(10000).ToString() + R.Next(10000).ToString();
-                    RandCodes.Add(Code);
+                    string Code = AuthorizeController.Codi[R.Next(AuthorizeController.Codi.Count)].Code;
                     return Redirect(guestR.redirect_url + "?code=" + Code);
                 }
                 else
@@ -232,7 +233,7 @@ namespace RSOI_lab2.Controllers
             try
             {
                 // TODO: Add delete logic here
-                
+
                 return RedirectToAction("Index");
             }
             catch

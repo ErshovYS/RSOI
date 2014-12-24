@@ -12,15 +12,12 @@ namespace RSOI_lab2.Controllers
     public class HomeController : Controller
     {
         public static SqlConnection connection;
-        public static HttpContextBase NasheVse;
-
+        
         public ActionResult Index()
         {
             ViewBag.Title = "Home Page";
             LoaD();
-            NasheVse = this.HttpContext;
-//            var X3 = NasheVse.Request.Headers.ToString();
-            
+
             return View();
         }
 

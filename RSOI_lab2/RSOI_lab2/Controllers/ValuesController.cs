@@ -7,8 +7,6 @@ using System.Web.Http;
 using RSOI_lab2.Models;
 using System.Data;
 using System.Data.SqlClient;
-using System.Web;
-using System.Web.Mvc;
 
 namespace RSOI_lab2.Controllers
 {
@@ -17,16 +15,14 @@ namespace RSOI_lab2.Controllers
         public static List<Notebook> SpisokN = new List<Notebook>();
         public static List<NotebookShort> SpisokS = new List<NotebookShort>();
         string tbl = "Tovari";
-        LevClass L = new LevClass();
 
         // GET: api/NotebookList
         public List<NotebookShort> Get()
-        {         
-            if (L.ProverkaCookies())
+        {
+            if (AccountController.UserName != "")
             {
                 try
                 {
-                    var Otvet = Json(L);
                     string qry = @"select id, name from " + tbl;
                     // Создаем адаптер данных
                     SqlDataAdapter da = new SqlDataAdapter();
@@ -59,9 +55,9 @@ namespace RSOI_lab2.Controllers
         }
 
         // GET: api
-        public IHttpActionResult Get(int count, int num)
+        public List<NotebookShort> Get(int count, int num)
         {
-            if (L.ProverkaCookies())
+            if (AccountController.UserName != "")
             {
                 try
                 {
@@ -85,24 +81,20 @@ namespace RSOI_lab2.Controllers
                         buff.Name = row["name"].ToString();
                         SpisokS.Add(buff);
                     }
-                    if (SpisokS.Count <= 0)
-                    {
-                        return BadRequest();
-                    }
                 }
                 catch (System.Exception ex)
                 {
                     Console.WriteLine("Ошибочка: " + ex);
                 }
-                return Json(SpisokS);
+                return SpisokS;
             }
             else
                 return null;
         }
 
-        public IHttpActionResult Get(int id)
+        public List<Notebook> Get(int id)
         {
-            if (L.ProverkaCookies())
+            if (AccountController.UserName != "")
             {
                 try
                 {
@@ -134,16 +126,12 @@ namespace RSOI_lab2.Controllers
 
                         SpisokN.Add(buff);
                     }
-                    if (SpisokN.Count <= 0)
-                    {
-                        return NotFound();
-                    }
                 }
                 catch (System.Exception ex)
                 {
                     Console.WriteLine("Ошибочка: " + ex);
                 }
-                return Json(SpisokN);
+                return SpisokN;
             }
             else
                 return null;
@@ -154,42 +142,36 @@ namespace RSOI_lab2.Controllers
     {
         static List<Proizv> Proizvoditely = new List<Proizv>();
         string tbl = "Proizv";
-        LevClass L = new LevClass();
 
-        void LoadProizv()
-        {
-            string qry = @"select * from " + tbl;
-            // Создаем адаптер данных
-            SqlDataAdapter da = new SqlDataAdapter();
-            // Создаем команду запроса для текущего подключения	
-            da.SelectCommand = new SqlCommand(qry, HomeController.connection);
-            // Создаем и наполняем набор данных
-            DataSet ds = new DataSet();
-            da.Fill(ds, tbl);
-            // Получаем ссылку на таблицу
-            DataTable dt = ds.Tables[tbl];
-
-            Proizv buff;
-            Proizvoditely.Clear();
-            foreach (DataRow row in dt.Rows)
-            {
-                buff = new Proizv();
-                buff.ProID = int.Parse(row["id"].ToString());
-                buff.Name = row["name"].ToString();
-                buff.Country = row["country"].ToString();
-                buff.Year = int.Parse(row["year"].ToString());
-                Proizvoditely.Add(buff);
-            }
-        }
-        
         // GET api/values
         public List<Proizv> Get()
         {
-            if (L.ProverkaCookies())
+            if (AccountController.UserName != "")
             {
                 try
                 {
-                    LoadProizv();
+                    string qry = @"select * from " + tbl;
+                    // Создаем адаптер данных
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    // Создаем команду запроса для текущего подключения	
+                    da.SelectCommand = new SqlCommand(qry, HomeController.connection);
+                    // Создаем и наполняем набор данных
+                    DataSet ds = new DataSet();
+                    da.Fill(ds, tbl);
+                    // Получаем ссылку на таблицу
+                    DataTable dt = ds.Tables[tbl];
+
+                    Proizv buff;
+                    Proizvoditely.Clear();
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        buff = new Proizv();
+                        buff.ProID = int.Parse(row["id"].ToString());
+                        buff.Name = row["name"].ToString();
+                        buff.Country = row["country"].ToString();
+                        buff.Year = int.Parse(row["year"].ToString());
+                        Proizvoditely.Add(buff);
+                    }
                 }
                 catch (System.Exception ex)
                 {
@@ -201,9 +183,9 @@ namespace RSOI_lab2.Controllers
                 return null;
         }
 
-        public PolnProizv Get(int id)
+        public List<NotebookShort> Get(int id)
         {
-            if (L.ProverkaCookies())
+            if (AccountController.UserName != "")
             {
                 try
                 {
@@ -227,27 +209,7 @@ namespace RSOI_lab2.Controllers
                         buff.Name = row["name"].ToString();
                         SpisokS.Add(buff);
                     }
-
-                    LoadProizv();
-
-                    int j = 0;
-                    while (Proizvoditely[j].ProID != id)
-                    {
-                        j++;
-                        if (j >= Proizvoditely.Count)
-                        {
-                            PolnProizv Otvet = new PolnProizv();
-                            Otvet.Infa = new Proizv();
-                            Otvet.Infa.Name = "Нет производителя с таким номером";
-                            Otvet.Spisok = null;
-                            return Otvet;
-                        }
-                    }
-
-                    PolnProizv Res = new PolnProizv();
-                    Res.Infa = Proizvoditely[j];
-                    Res.Spisok = SpisokS;
-                    return Res;
+                    return SpisokS;
                 }
                 catch (System.Exception ex)
                 {
@@ -277,9 +239,9 @@ namespace RSOI_lab2.Controllers
     {
         public static List<Users> Useri = new List<Users>();
         public static List<Codes> Codi = new List<Codes>();
-        LevClass L = new LevClass();
+
         static string tblU = "Users";
-        static string tblC = "tokens";
+        static string tblC = "Codes";
 
         public static void LoadUsers()
         {
@@ -326,9 +288,8 @@ namespace RSOI_lab2.Controllers
             foreach (DataRow row in dt2.Rows)
             {
                 buff = new Codes();
+                buff.Code = row["code"].ToString();
                 buff.Access_token = row["access_token"].ToString();
-                buff.Refresh_token = row["refresh_token"].ToString();
-                buff.Expires_in = row["expires_in"].ToString();
                 Codi.Add(buff);
             }
         }
@@ -352,12 +313,12 @@ namespace RSOI_lab2.Controllers
                 if (Right)
                 {
                     LoadCodes();
-                    Random R = new Random();
-                    var buff = Codi[R.Next(Codi.Count)];
-                    if (AccountController.RandCodes.IndexOf(code) >= 0)
+                    foreach (Codes buff in Codi)
                     {
-                        L.ZapisCookies(buff.Access_token);
-                        return ("Access token = " + buff.Access_token);
+                        if (buff.Code == code)
+                        {
+                            return ("Access token = " + buff.Access_token);
+                        }
                     }
                 }
             }
@@ -371,50 +332,9 @@ namespace RSOI_lab2.Controllers
 
     public class MeController : ApiController
     {
-        LevClass L = new LevClass();
-
-        // GET api/values
-        public Users Get()
-          {
-            try
-            {
-                var HeadeR = Request.Headers.ToString();
-                if (L.Proverka(HeadeR))
-                {
-                    return L.CookiesUserName();
-                }
-            }
-            catch (System.Exception ex)
-            {
-                Console.WriteLine("Ошибочка: " + ex);
-            }
-            return null;
-        }
-    }
-
-    public class StatusController : ApiController
-    {
-        // GET api/values
-        public string Get()
-        {
-            if (AccountController.Uzver != null)
-            {
-                return "Авторизован";
-            }
-            else
-            {
-                return "Не авторизован";
-            }
-        }
-    }
-
-    public class LevClass : Controller
-    {
-        public List<Users> Useri = new List<Users>();
         public List<Codes> Codi = new List<Codes>();
 
-        public string tblU = "Users";
-        public string tblC = "tokens";
+        string tblC = "Codes";
 
         void LoadCodes()
         {
@@ -433,96 +353,50 @@ namespace RSOI_lab2.Controllers
             foreach (DataRow row in dt2.Rows)
             {
                 buff = new Codes();
+                buff.Code = row["code"].ToString();
                 buff.Access_token = row["access_token"].ToString();
-                buff.Refresh_token = row["refresh_token"].ToString();
-                buff.Expires_in = row["expires_in"].ToString();
                 Codi.Add(buff);
             }
         }
 
-        public void LoadUsers()
+        // GET api/values
+        public Users Get(string access_token)
         {
-            string qry = @"select * from " + tblU;
-            // Создаем адаптер данных
-            SqlDataAdapter da = new SqlDataAdapter();
-            // Создаем команду запроса для текущего подключения	
-            da.SelectCommand = new SqlCommand(qry, HomeController.connection);
-            // Создаем и наполняем набор данных
-            DataSet ds = new DataSet();
-            da.Fill(ds, tblU);
-            // Получаем ссылку на таблицу
-            DataTable dt = ds.Tables[tblU];
-
-            Users buff;
-            foreach (DataRow row in dt.Rows)
+            if (AccountController.Uzver != null)
             {
-                buff = new Users();
-                buff.LogiN = row["login"].ToString();
-                buff.Password = row["password"].ToString();
-                buff.Email = row["email"].ToString();
-                buff.Phone = row["phone"].ToString();
-                buff.client_id = row["client_id"].ToString();
-                buff.client_key = row["client_key"].ToString();
-                buff.redirect_url = row["redirect_url"].ToString();
-                Useri.Add(buff);
-            }
-        }
-
-        public void ZapisCookies(string access_token)
-        {
-            try
-            {
-                HttpCookie Kuka = new System.Web.HttpCookie("lab2");
-
-                Kuka.Values.Add("access_token", access_token);
-                Kuka.Values.Add("login", AccountController.Uzver.LogiN);
-                Kuka.Expires = DateTime.Now.AddDays(1);
-                Kuka.Secure = true;
-                Kuka.Shareable = true;
-                HomeController.NasheVse.Response.SetCookie(Kuka);
-//                HomeController.NasheVse.Response.Cookies.Add(Kuka);
-            }
-            catch (System.Exception ex)
-            {
-                Console.WriteLine("Ошибочка: " + ex);
-            }
-        }
-
-        public bool ProverkaCookies()
-        {
-            LoadCodes();
-            HttpCookie Kuka = HomeController.NasheVse.Request.Cookies["lab2"];
-            foreach (var buff in Codi)
-                if (Kuka.Values["access_token"] == buff.Access_token)
+                try
                 {
-                    return true;
+                    LoadCodes();
+                    foreach (Codes buff in Codi)
+                    {
+                        if (buff.Access_token == access_token)
+                        {
+                            return AccountController.Uzver;
+                        }
+                    }
                 }
-            return false;
-        }
-
-        public bool Proverka(string HeadeR)
-        {
-            LoadCodes();
-            var Kuka = HeadeR.Substring(HeadeR.IndexOf("lab2: ") + "lab2: ".Length).Trim('\r', '\n');
-            foreach (var buff in Codi)
-                if (Kuka == buff.Access_token)
+                catch (System.Exception ex)
                 {
-                    return true;
+                    Console.WriteLine("Ошибочка: " + ex);
                 }
-            return false;
-        }
-
-        public Users CookiesUserName()
-        {
-            LoadUsers();
-            HttpCookie Kuka;
-            Kuka = HomeController.NasheVse.Request.Cookies["lab2"];
-            foreach (var buff in Useri)
-                if (Kuka.Values["login"] == buff.LogiN)
-                {
-                    return buff;
-                }
+            }
             return null;
+        }
+    }
+
+    public class StatusController : ApiController
+    {
+        // GET api/values
+        public string Get()
+        {
+            if (AccountController.Uzver != null)
+            {
+                return "Авторизован";
+            }
+            else
+            {
+                return "Не авторизован";
+            }
         }
     }
 }
