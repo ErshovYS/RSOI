@@ -1,0 +1,19 @@
+﻿@model RSOI_lab2.Models.Users
+
+@{
+    ViewBag.Title = "Регистрация";
+}
+
+<h2>Регистрация</h2>
+
+<h3 style="color: Red;">@RSOI_lab2.Controllers.AccountController.Message</h3>
+
+@using (Html.BeginForm())
+	{
+    <p>Логин: @Html.TextBoxFor(x => x.LogiN) </p>
+    <p>Пароль: @Html.TextBoxFor(x => x.Password)</p>
+    <p>Еmail: @Html.TextBoxFor(x => x.Email)</p>
+    <p>Телефон: @Html.TextBoxFor(x => x.Phone)</p>
+    <p>Redirect_url: @Html.TextBoxFor(x => x.redirect_url)</p>
+    <input type="submit" value="Зарегистрироваться" />
+    }

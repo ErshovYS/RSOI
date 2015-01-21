@@ -1,0 +1,19 @@
+﻿@model FrontEnd.Models.Proizv
+
+@{
+    ViewBag.Title = "Добавление";
+}
+
+<h2>Добавление производителя</h2>
+
+<h3 style="color: Red;">@FrontEnd.Controllers.HomeController.MessegInsert2</h3>
+
+<p>Введите данные производителя, которые хотите добавить:</p>
+@using (Html.BeginForm())
+{
+    <p>ID: @Html.TextBoxFor(x => x.ProID) </p>
+    <p>Название: @Html.TextBoxFor(x => x.Name) </p>
+    <p>Страна: @Html.TextBoxFor(x => x.Country) </p>
+    <p>Год основания: @Html.TextBoxFor(x => x.Year) </p>
+    <input type="submit" value="Добавить" />
+}

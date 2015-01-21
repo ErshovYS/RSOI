@@ -1,0 +1,24 @@
+﻿@model FrontEnd.Models.Notebook
+
+@{
+    ViewBag.Title = "Добавление";
+}
+
+<h2>Добавление</h2>
+
+<h3 style="color: Red;">@FrontEnd.Controllers.HomeController.MessegInsert</h3>
+
+<p>Введите данные ноутбука, которых хотите добавить:</p>
+@using (Html.BeginForm())
+{
+    <p>ID: @Html.TextBoxFor(x => x.ID) </p>
+    <p>Название модели: @Html.TextBoxFor(x => x.Name) </p>
+    <p>Процессор: @Html.TextBoxFor(x => x.Proc) </p>
+    <p>Размер оперативной памяти: @Html.TextBoxFor(x => x.Oper) </p>
+    <p>Видеокарта: @Html.TextBoxFor(x => x.VideoCard) </p>
+    <p>Объем жесткого диска: @Html.TextBoxFor(x => x.Memory) </p>
+    <p>Размер экрана: @Html.TextBoxFor(x => x.Desksize) </p>
+    <p>Цена: @Html.TextBoxFor(x => x.Price) </p>
+    <p>ID производителя: @Html.TextBoxFor(x => x.ProizvID) </p>
+    <input type="submit" value="Добавить" />
+}

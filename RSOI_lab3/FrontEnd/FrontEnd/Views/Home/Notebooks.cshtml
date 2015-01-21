@@ -1,0 +1,30 @@
+﻿@{
+    var S = FrontEnd.Controllers.RequestsController.Spisok;
+}
+
+@{
+    ViewBag.Title = "Ноутбуки";
+}
+
+<h2>Ноутбуки</h2>
+<h3 style="color: Red;">@FrontEnd.Controllers.HomeController.MessegShow</h3>
+          
+<table border="1" width="800">
+    @{ if (S != null)
+        {
+        <tr>
+            <td>ID</td>
+            <td>Наименование</td>
+
+        </tr>
+         foreach (var item in S)
+         {
+            <tr>
+                <td>@item.ID</td>
+                <td>@item.Name</td>
+            </tr>
+         }
+            S.Clear(); 
+        }
+     }
+</table>

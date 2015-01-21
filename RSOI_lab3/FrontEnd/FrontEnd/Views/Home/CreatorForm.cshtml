@@ -1,0 +1,18 @@
+﻿@model FrontEnd.Models.Params
+
+@{
+    ViewBag.Title = "Подробно";
+}
+
+<h2>Подробно</h2>
+
+<h3 style="color: Red;">@FrontEnd.Controllers.HomeController.MessegCreator</h3>
+
+<p>Введите номер производителя:</p>
+@using (Html.BeginForm())
+{
+    <p>Имя параметра: @Html.TextBoxFor(x => x.Param) </p>
+    <p>Значение параметра: @Html.TextBoxFor(x => x.Value) </p>
+    <input type="submit" value="Показать" />
+}
+

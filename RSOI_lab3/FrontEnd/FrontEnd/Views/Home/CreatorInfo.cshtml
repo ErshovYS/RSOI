@@ -1,0 +1,48 @@
+﻿@{
+    var S = FrontEnd.Controllers.RequestsController.SpisokC;
+}
+
+@{
+    ViewBag.Title = "Подробно о производителях";
+}
+
+<h2>Подробно о производителях</h2>
+<h3 style="color: Red;">@FrontEnd.Controllers.HomeController.MessegCreator</h3>
+
+<table border="1" width="800">
+    @{ if (S != null)
+     {
+
+         foreach (var item in S)
+         {
+            <tr>
+                <td>ID</td>
+                <td>Наименование</td>
+                <td>Страна</td>
+                <td>Год основания</td>
+            </tr>
+            <tr>
+                <td>@item.Infa.ProID</td>
+                <td>@item.Infa.Name</td>
+                <td>@item.Infa.Country</td>
+                <td>@item.Infa.Year</td>
+            </tr>
+            <tr>
+                <td>ID ноутбука</td>
+                <td>Наименование</td>
+            </tr>
+
+             foreach (var nout in item.Spisok)
+             {
+                <tr>
+                    <td>@nout.ID</td>
+                    <td>@nout.Name</td>
+                </tr>
+             }
+            <tr><td></td><td></td></tr>
+         }
+         S.Clear();
+     }
+}
+</table>
+

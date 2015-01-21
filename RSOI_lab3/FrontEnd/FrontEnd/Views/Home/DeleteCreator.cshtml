@@ -1,0 +1,16 @@
+﻿@model FrontEnd.Models.Proizv
+
+@{
+    ViewBag.Title = "Удаление";
+}
+
+<h2>Удаление производителя</h2>
+
+<h3 style="color: Red;">@FrontEnd.Controllers.HomeController.MessegDelete2</h3>
+
+<p>Введите номер производителя, которого хотите удалить:</p>
+@using (Html.BeginForm())
+{
+    <p>ID: @Html.TextBoxFor(x => x.ProID) </p>
+    <input type="submit" value="Удалить" />
+}
